@@ -1,1 +1,4 @@
 data
+fabric_install/channel-artifacts
+fabric_install/crypto-config
+**/__pycache__

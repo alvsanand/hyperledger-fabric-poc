@@ -24,7 +24,8 @@ sudo apt-get install nfs-server
 sudo mkdir -p /var/nfs
 
 sudo chown -R nobody:nogroup /var/nfs
-sudo chmod -R a+rwx  /var/nfs
+sudo chmod -R a+rwx /var/nfs
+sudo setfacl -d -m u::rwX,g::rwX,o::rwX /var/nfs
 
 sudo sh -c 'echo "/var/nfs *(rw,no_root_squash,no_subtree_check)" >> /etc/exports'
 
@@ -33,36 +34,4 @@ sudo systemctl restart nfs-server
 
 ### Installing Hyperledger Tools
 
-#### Pre-requisites
-
-```
-curl -O https://hyperledger.github.io/composer/prereqs-ubuntu.sh && \
-    chmod u+x prereqs-ubuntu.sh && \
-    ./prereqs-ubuntu.sh
-```
-
-#### Installing Hyperledger Composer development tools
-
-```
-npm install -g composer-cli
-npm install -g generator-hyperledger-composer
-npm install -g composer-rest-server
-npm install -g yo
-npm install -g composer-playground
-```
-
-#### Installing Hyperledger fabric-tools
-
-```
-mkdir ~/fabric-tools && cd ~/fabric-tools
-curl -O https://raw.githubusercontent.com/hyperledger/composer-tools/master/packages/fabric-dev-servers/fabric-dev-servers.tar.gz
-
-tar xvzf fabric-dev-servers.tar.gz
-```
-
-## Running the PoC
-
-## Starting Hyperledger Fabric
-
-```
-```
+See [HyperLedger Fabric Installation Manual](/Users/avss/work/workspace/hyperledger-fabric-poc/fabric_install/README.md)

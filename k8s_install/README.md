@@ -22,11 +22,18 @@ sudo apt-get install docker-ce
 
 sudo groupadd docker
 sudo usermod -aG docker $USER
+```
 
-sudo sh -c "echo '{
+## Fix Docker Daemon config
+
+```
+sudo sh -c 'echo "{
   "exec-opts": ["native.cgroupdriver=systemd"]
-}' > /etc/docker/daemon.json"
+}" > /etc/docker/daemon.json
 sudo chmod a+r /etc/docker/daemon.json
+
+systemctl daemon-reload
+systemctl start docker.service
 ```
 
 ## Installing kubeadm, kubelet and kubectl
@@ -73,6 +80,28 @@ kubectl apply -f https://docs.projectcalico.org/v2.6/getting-started/kubernetes/
 kubectl taint nodes --all node-role.kubernetes.io/master-
 ```
 
+## Fix kubelet config to start while booting
+
+```
+sudo usermod -aG docker kubelet
+
+sudo sh -c 'echo "[Service]
+Environment=\"KUBELET_KUBECONFIG_ARGS=--bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf\"
+Environment=\"KUBELET_SYSTEM_PODS_ARGS=--pod-manifest-path=/etc/kubernetes/manifests --allow-privileged=true\"
+Environment=\"KUBELET_NETWORK_ARGS=--network-plugin=cni --cni-conf-dir=/etc/cni/net.d --cni-bin-dir=/opt/cni/bin\"
+Environment=\"KUBELET_DNS_ARGS=--cluster-dns=10.96.0.10 --cluster-domain=cluster.local\"
+Environment=\"KUBELET_AUTHZ_ARGS=--authorization-mode=Webhook --client-ca-file=/etc/kubernetes/pki/ca.crt\"
+Environment=\"KUBELET_CADVISOR_ARGS=--cadvisor-port=0\"
+Environment=\"KUBELET_CERTIFICATE_ARGS=--rotate-certificates=true --cert-dir=/var/lib/kubelet/pki\"
+Environment=\"KUBELET_CGROUP_ARGS=--cgroup-driver=systemd\"
+ExecStart=
+ExecStart=/usr/bin/kubelet $KUBELET_KUBECONFIG_ARGS $KUBELET_SYSTEM_PODS_ARGS $KUBELET_NETWORK_ARGS $KUBELET_DNS_ARGS $KUBELET_AUTHZ_ARGS $KUBELET_CADVISOR_ARGS $KUBELET_CERTIFICATE_ARGS $KUBELET_EXTRA_ARGS $KUBELET_CGROUP_ARGS" > /etc/systemd/system/kubelet.service.d/10-kubeadm.conf'
+
+sudo systemctl daemon-reload
+sudo systemctl enable kubelet.service
+sudo systemctl start kubelet.service
+```
+
 ## Creating Admin token for Dashboard (not in Production)
 
 ```
@@ -91,16 +120,16 @@ subjects:
   name: kubernetes-dashboard
   namespace: kube-system
 " > dashboard-admin.yaml
-
-kubectl -n kube-system get secret | grep kubernetes-dashboard-token | awk -F" " '{print $1}' | xargs kubectl -n kube-system describe secret | grep "token:" | awk -F" " '{print $2}'
 ```
 
 ## Accesing Dashboard
 
 * Execute:
 ```
+kubectl -n kube-system get secret | grep kubernetes-dashboard-token | awk -F" " '{print $1}' | xargs kubectl -n kube-system describe secret | grep "token:" | awk -F" " '{print $2}'
 kubectl proxy
 ```
 
 * Go to [Kubernetes Dashboard](http://localhost:8001/api/v1/namespaces/kube-system/services/https:kubernetes-dashboard:/proxy/#!/overview?namespace=default) and enter precious token.
 
+david sanchez
