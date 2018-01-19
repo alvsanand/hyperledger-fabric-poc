@@ -22,18 +22,19 @@ sudo apt-get install docker-ce
 
 sudo groupadd docker
 sudo usermod -aG docker $USER
+exit
 ```
 
 ## Fix Docker Daemon config
 
 ```
 sudo sh -c 'echo "{
-  "exec-opts": ["native.cgroupdriver=systemd"]
-}" > /etc/docker/daemon.json
+  \"exec-opts\": [\"native.cgroupdriver=systemd\"]
+}" > /etc/docker/daemon.json'
 sudo chmod a+r /etc/docker/daemon.json
 
-systemctl daemon-reload
-systemctl start docker.service
+sudo systemctl daemon-reload
+sudo systemctl start docker.service
 ```
 
 ## Installing kubeadm, kubelet and kubectl

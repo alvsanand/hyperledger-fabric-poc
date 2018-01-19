@@ -2,3 +2,8 @@ data
 fabric_install/channel-artifacts
 fabric_install/crypto-config
 **/__pycache__
+fabric_install/prereqs-ubuntu.sh
+.history
+**/*.block
+**/*.tx
+**/crypto-config/

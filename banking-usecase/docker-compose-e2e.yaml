@@ -1,0 +1,83 @@
+# Copyright IBM Corp. All Rights Reserved.
+#
+# SPDX-License-Identifier: Apache-2.0
+#
+
+version: '2'
+
+networks:
+  byfn:
+services:
+  ca0:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-partnersbank
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.partnersbank.bankingfederation.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f81fbf5b4aa397cf32759cc52b414478c257339c6aece668cd997cd29211fc38_sk
+    ports:
+      - "7054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.partnersbank.bankingfederation.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/f81fbf5b4aa397cf32759cc52b414478c257339c6aece668cd997cd29211fc38_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/partnersbank.bankingfederation.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerPartnersBank
+    networks:
+      - byfn
+
+  ca1:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca-multibankwest
+      - FABRIC_CA_SERVER_TLS_ENABLED=true
+      - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.multibankwest.bankingfederation.com-cert.pem
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/b7c03db0811b1b45c3d708396f4d6629b8fd9d81f913b3b6ef224dff773232cd_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.multibankwest.bankingfederation.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/b7c03db0811b1b45c3d708396f4d6629b8fd9d81f913b3b6ef224dff773232cd_sk -b admin:adminpw -d'
+    volumes:
+      - ./crypto-config/peerOrganizations/multibankwest.bankingfederation.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca_peerMultiBankWest
+    networks:
+      - byfn
+
+  orderer.bankingfederation.com:
+    extends:
+      file:   base/docker-compose-base.yaml
+      service: orderer.bankingfederation.com
+    container_name: orderer.bankingfederation.com
+    networks:
+      - byfn
+
+  peer0.partnersbank.bankingfederation.com:
+    container_name: peer0.partnersbank.bankingfederation.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.partnersbank.bankingfederation.com
+    networks:
+      - byfn
+
+  peer1.partnersbank.bankingfederation.com:
+    container_name: peer1.partnersbank.bankingfederation.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.partnersbank.bankingfederation.com
+    networks:
+      - byfn
+
+  peer0.multibankwest.bankingfederation.com:
+    container_name: peer0.multibankwest.bankingfederation.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer0.multibankwest.bankingfederation.com
+    networks:
+      - byfn
+
+  peer1.multibankwest.bankingfederation.com:
+    container_name: peer1.multibankwest.bankingfederation.com
+    extends:
+      file:  base/docker-compose-base.yaml
+      service: peer1.multibankwest.bankingfederation.com
+    networks:
+      - byfn

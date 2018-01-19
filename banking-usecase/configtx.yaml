@@ -22,17 +22,15 @@ Profiles:
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *Org1
-                    - *Org2
-
+                    - *PartnersBank
+                    - *MultiBankWest
     TwoOrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Org1
-                - *Org2
-
+                - *PartnersBank
+                - *MultiBankWest
 
 ################################################################################
 #
@@ -49,49 +47,47 @@ Organizations:
     - &OrdererOrg
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Orgorderer1MSP
+        Name: OrdererOrg
 
         # ID to load the MSP definition as
-        ID: Orgorderer1MSP
+        ID: OrdererMSP
 
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/orgorderer1/msp
+        MSPDir: crypto-config/ordererOrganizations/bankingfederation.com/msp
 
-    - &Org1
+    - &PartnersBank
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org1MSP
+        Name: PartnersBankMSP
 
         # ID to load the MSP definition as
-        ID: Org1MSP
+        ID: PartnersBankMSP
 
-        MSPDir: crypto-config/peerOrganizations/org1/msp
+        MSPDir: crypto-config/peerOrganizations/partnersbank.bankingfederation.com/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org1
+            - Host: peer0.partnersbank.bankingfederation.com
               Port: 7051
 
-    - &Org2
+    - &MultiBankWest
         # DefaultOrg defines the organization which is used in the sampleconfig
         # of the fabric.git development environment
-        Name: Org2MSP
+        Name: MultiBankWestMSP
 
         # ID to load the MSP definition as
-        ID: Org2MSP
+        ID: MultiBankWestMSP
 
-        MSPDir: crypto-config/peerOrganizations/org2/msp
+        MSPDir: crypto-config/peerOrganizations/multibankwest.bankingfederation.com/msp
 
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.org2
+            - Host: peer0.multibankwest.bankingfederation.com
               Port: 7051
-     
-
 
 ################################################################################
 #
@@ -108,7 +104,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer0.orgorderer1:7050
+        - orderer.bankingfederation.com:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
@@ -121,7 +117,7 @@ Orderer: &OrdererDefaults
 
         # Absolute Max Bytes: The absolute maximum number of bytes allowed for
         # the serialized messages in a batch.
-        AbsoluteMaxBytes: 98 MB
+        AbsoluteMaxBytes: 99 MB
 
         # Preferred Max Bytes: The preferred maximum number of bytes allowed for
         # the serialized messages in a batch. A message larger than the preferred

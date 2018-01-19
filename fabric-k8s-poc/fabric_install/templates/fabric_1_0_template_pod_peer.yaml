@@ -68,11 +68,11 @@ spec:
          #  subPath: channel-artifacts
          - mountPath: /etc/hyperledger/fabric/msp 
            name: certificate
-           #subPath: crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp
+           #subPath: crypto-config/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/msp
            subPath: $mspPath
          - mountPath: /etc/hyperledger/fabric/tls
            name: certificate
-           #subPath: crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/
+           #subPath: crypto-config/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/
            subPath: $tlsPath
          - mountPath: /host/var/run/
            name: run
@@ -98,6 +98,7 @@ spec:
    peer-id: $peerID
    org: $namespace
  type: NodePort
+ externalName: $peerID.$namespace.svc.cluster.local
  ports:
    - name: externale-listen-endpoint
      protocol: TCP

@@ -1,0 +1,16 @@
+{
+	"name": "bankingfederation",
+	"version": "1.0.0",
+	"description": "Banking Federation chaincode implemented in node.js",
+	"engines": {
+		"node": ">=8.4.0",
+		"npm": ">=5.3.0"
+	},
+        "scripts": { "start" : "chaincode_bankingfederation.js" },
+	"engine-strict": true,
+	"engineStrict": true,
+	"license": "Apache-2.0",
+	"dependencies": {
+		"fabric-shim": "1.0.0-preview"
+	}
+}

@@ -47,11 +47,11 @@ spec:
           - name: CORE_PEER_TLS_ENABLED
             value: "false"
           #- name: CORE_PEER_TLS_CERT_FILE
-          #  value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1/peers/peer0.org1/tls/server.crt
+          #  value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank/peers/peer0.partnersbank/tls/server.crt
           #- name: CORE_PEER_TLS_KEY_FILE
-          #  value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1/peers/peer0.org1/tls/server.key
+          #  value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank/peers/peer0.partnersbank/tls/server.key
           #- name: CORE_PEER_TLS_ROOTCERT_FILE
-          #  value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1/peers/peer0.org1/tls/ca.crt
+          #  value: /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank/peers/peer0.partnersbank/tls/ca.crt
           - name: CORE_VM_ENDPOINT
             value: unix:///host/var/run/docker.sock
           - name: GOPATH

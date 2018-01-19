@@ -47,11 +47,11 @@ spec:
         volumeMounts:
          - mountPath: /var/hyperledger/orderer/msp 
            name: certificate
-           #subPath: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp
+           #subPath: crypto-config/ordererOrganizations/bankingfederation.com/orderers/orderer.bankingfederation.com/msp
            subPath: $mspPath
          - mountPath: /var/hyperledger/orderer/tls
            name: certificate
-           #subPath: crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls/
+           #subPath: crypto-config/ordererOrganizations/bankingfederation.com/orderers/orderer.bankingfederation.com/tls/
            subPath: $tlsPath
          - mountPath: /var/hyperledger/orderer/orderer.genesis.block
            name: certificate
@@ -78,6 +78,7 @@ spec:
    orderer-id: $ordererID
    org: $namespace
  type: NodePort
+ externalName: $ordererID.$namespace.svc.cluster.local
  ports:
    - name: listen-endpoint
      protocol: TCP

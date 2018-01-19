@@ -59,7 +59,7 @@ def configORGS(name, path): # name means if of org, path describe where is the n
 		####### pod config yaml for org ca
 
 		###Need to expose pod's port to worker ! ####
-		##org format like this org1-f-1##
+		##org format like this partnersbank-f-1##
 		addressSegment = (int(name.split("-")[0].split("org")[-1]) - 1) * GAP	
 		exposedPort = PORTSTARTFROM + addressSegment
 
