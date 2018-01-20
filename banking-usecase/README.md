@@ -77,9 +77,11 @@ sudo apt install libtool libltdl-dev
 
 mkdir fabric-tools
 cd fabric-tools
-curl -sSL https://goo.gl/6wtTN5 | bash -s bootstrap.sh
 
-echo "export PATH=$HOME/fabric-tools/bin:$PATH" >> .bashrc
+VERSION=1.1.0-preview
+curl -sSL https://goo.gl/6wtTN5 | bash -s $VERSION $VERSION
+
+echo "export PATH=$PWD/bin:$PATH" >> $HOME/.bashrc
 ```
 
 ## Running the PoC
