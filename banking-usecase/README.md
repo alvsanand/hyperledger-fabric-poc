@@ -95,7 +95,7 @@ echo "export PATH=$PWD/bin:$PATH" >> $HOME/.bashrc
 ### Launching the Hyperledger Fabric Cluster 
 
 ```
-./byfn.sh -m up
+./byfn.sh -m up -s couchdb
 ```
 
 ### Stopping the Hyperledger Fabric Cluster 

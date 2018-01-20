@@ -10,10 +10,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-partnersbank
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.partnersbank.bankingfederation.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/4d0f7fca3c939461b55eecc63bacb0efaf1640145c960dccad8147929dbe8302_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/226b67e2dacd0f4f62243a19a9e51766ddaa4b2a62dfe98af4452af046ff874f_sk
     ports:
       - "7054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.partnersbank.bankingfederation.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/4d0f7fca3c939461b55eecc63bacb0efaf1640145c960dccad8147929dbe8302_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.partnersbank.bankingfederation.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/226b67e2dacd0f4f62243a19a9e51766ddaa4b2a62dfe98af4452af046ff874f_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/partnersbank.bankingfederation.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerPartnersBank
@@ -27,10 +27,10 @@ services:
       - FABRIC_CA_SERVER_CA_NAME=ca-multibankwest
       - FABRIC_CA_SERVER_TLS_ENABLED=true
       - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.multibankwest.bankingfederation.com-cert.pem
-      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/0719bf2632d3b24b64a11e95ed10804ad2fa948c03220bc23feb60436c75aa94_sk
+      - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/c3d1379e973465956e9d93a602159c79c767a78ce6489e748a8ebfaf3713aa46_sk
     ports:
       - "8054:7054"
-    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.multibankwest.bankingfederation.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/0719bf2632d3b24b64a11e95ed10804ad2fa948c03220bc23feb60436c75aa94_sk -b admin:adminpw -d'
+    command: sh -c 'fabric-ca-server start --ca.certfile /etc/hyperledger/fabric-ca-server-config/ca.multibankwest.bankingfederation.com-cert.pem --ca.keyfile /etc/hyperledger/fabric-ca-server-config/c3d1379e973465956e9d93a602159c79c767a78ce6489e748a8ebfaf3713aa46_sk -b admin:adminpw -d'
     volumes:
       - ./crypto-config/peerOrganizations/multibankwest.bankingfederation.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerMultiBankWest
