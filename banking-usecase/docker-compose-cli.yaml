@@ -1,12 +1,7 @@
-# Copyright IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
 version: '2'
 
 networks:
-  byfn:
+  net_bankingfederation.com:
 
 services:
 
@@ -16,7 +11,7 @@ services:
       service: orderer.bankingfederation.com
     container_name: orderer.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer0.partnersbank.bankingfederation.com:
     container_name: peer0.partnersbank.bankingfederation.com
@@ -24,7 +19,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer0.partnersbank.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer1.partnersbank.bankingfederation.com:
     container_name: peer1.partnersbank.bankingfederation.com
@@ -32,7 +27,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer1.partnersbank.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer0.multibankwest.bankingfederation.com:
     container_name: peer0.multibankwest.bankingfederation.com
@@ -40,7 +35,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer0.multibankwest.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer1.multibankwest.bankingfederation.com:
     container_name: peer1.multibankwest.bankingfederation.com
@@ -48,7 +43,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer1.multibankwest.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   cli:
     container_name: cli
@@ -62,18 +57,18 @@ services:
       - CORE_PEER_ADDRESS=peer0.partnersbank.bankingfederation.com:7051
       - CORE_PEER_LOCALMSPID=PartnersBankMSP
       - CORE_PEER_TLS_ENABLED=true
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
-    working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
+    working_dir: /opt/gopath/src/bankingfederation.com
     command: /bin/bash -c './scripts/script.sh ${CHANNEL_NAME} ${DELAY}; sleep $TIMEOUT'
     volumes:
         - /var/run/:/host/var/run/
-        - ./../chaincode/:/opt/gopath/src/github.com/hyperledger/fabric/examples/chaincode/go
-        - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
-        - ./scripts:/opt/gopath/src/github.com/hyperledger/fabric/peer/scripts/
-        - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts
+        - ./chaincode/:/opt/gopath/src/bankingfederation.com/chaincode/
+        - ./crypto-config:/opt/gopath/src/bankingfederation.com/crypto/
+        - ./scripts:/opt/gopath/src/bankingfederation.com/scripts/
+        - ./channel-artifacts:/opt/gopath/src/bankingfederation.com/channel-artifacts
     depends_on:
       - orderer.bankingfederation.com
       - peer0.partnersbank.bankingfederation.com
@@ -81,5 +76,5 @@ services:
       - peer0.multibankwest.bankingfederation.com
       - peer1.multibankwest.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 

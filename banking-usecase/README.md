@@ -97,3 +97,9 @@ echo "export PATH=$PWD/bin:$PATH" >> $HOME/.bashrc
 ```
 ./byfn.sh -m up
 ```
+
+### Stopping the Hyperledger Fabric Cluster 
+
+```
+./byfn.sh -m down
+```

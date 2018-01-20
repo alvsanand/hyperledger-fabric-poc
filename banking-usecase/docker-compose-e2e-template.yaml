@@ -1,12 +1,7 @@
-# Copyright IBM Corp. All Rights Reserved.
-#
-# SPDX-License-Identifier: Apache-2.0
-#
-
 version: '2'
 
 networks:
-  byfn:
+  net_bankingfederation.com:
 services:
   ca0:
     image: hyperledger/fabric-ca
@@ -23,7 +18,7 @@ services:
       - ./crypto-config/peerOrganizations/partnersbank.bankingfederation.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerPartnersBank
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   ca1:
     image: hyperledger/fabric-ca
@@ -40,7 +35,7 @@ services:
       - ./crypto-config/peerOrganizations/multibankwest.bankingfederation.com/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca_peerMultiBankWest
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   orderer.bankingfederation.com:
     extends:
@@ -48,7 +43,7 @@ services:
       service: orderer.bankingfederation.com
     container_name: orderer.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer0.partnersbank.bankingfederation.com:
     container_name: peer0.partnersbank.bankingfederation.com
@@ -56,7 +51,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer0.partnersbank.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer1.partnersbank.bankingfederation.com:
     container_name: peer1.partnersbank.bankingfederation.com
@@ -64,7 +59,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer1.partnersbank.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer0.multibankwest.bankingfederation.com:
     container_name: peer0.multibankwest.bankingfederation.com
@@ -72,7 +67,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer0.multibankwest.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com
 
   peer1.multibankwest.bankingfederation.com:
     container_name: peer1.multibankwest.bankingfederation.com
@@ -80,4 +75,4 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer1.multibankwest.bankingfederation.com
     networks:
-      - byfn
+      - net_bankingfederation.com

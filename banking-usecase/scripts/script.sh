@@ -7,7 +7,7 @@ echo "\___ \    | |     / _ \   | |_) |   | |  "
 echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
-echo "Build your first network (BYFN) end-to-end test"
+echo "Build bankingfederation.com Network end-to-end test"
 echo
 CHANNEL_NAME="$1"
 DELAY="$2"
@@ -15,7 +15,9 @@ DELAY="$2"
 : ${TIMEOUT:="60"}
 COUNTER=1
 MAX_RETRY=5
-ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/bankingfederation.com/orderers/orderer.bankingfederation.com/msp/tlscacerts/tlsca.bankingfederation.com-cert.pem
+ORDERER_CA=/opt/gopath/src/bankingfederation.com/crypto/ordererOrganizations/bankingfederation.com/orderers/orderer.bankingfederation.com/msp/tlscacerts/tlsca.bankingfederation.com-cert.pem
+LANGUAGE=node
+
 
 echo "Channel name : "$CHANNEL_NAME
 
@@ -33,18 +35,18 @@ setGlobals () {
 
 	if [ $1 -eq 0 -o $1 -eq 1 ] ; then
 		CORE_PEER_LOCALMSPID="PartnersBankMSP"
-		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/ca.crt
-		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
+		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/ca.crt
+		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
 		if [ $1 -eq 0 ]; then
 			CORE_PEER_ADDRESS=peer0.partnersbank.bankingfederation.com:7051
 		else
 			CORE_PEER_ADDRESS=peer1.partnersbank.bankingfederation.com:7051
-			CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
+			CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
 		fi
 	else
 		CORE_PEER_LOCALMSPID="MultiBankWestMSP"
-		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/multibankwest.bankingfederation.com/peers/peer0.multibankwest.bankingfederation.com/tls/ca.crt
-		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/multibankwest.bankingfederation.com/users/Admin@multibankwest.bankingfederation.com/msp
+		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/multibankwest.bankingfederation.com/peers/peer0.multibankwest.bankingfederation.com/tls/ca.crt
+		CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/multibankwest.bankingfederation.com/users/Admin@multibankwest.bankingfederation.com/msp
 		if [ $1 -eq 2 ]; then
 			CORE_PEER_ADDRESS=peer0.multibankwest.bankingfederation.com:7051
 		else
@@ -116,7 +118,8 @@ joinChannel () {
 installChaincode () {
 	PEER=$1
 	setGlobals $PEER
-	peer chaincode install -n mycc -v 1.0 -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 >&log.txt
+
+	peer chaincode install -n mycc -v 1.0 -p chaincode/ -l $LANGUAGE >&log.txt
 	res=$?
 	cat log.txt
         verifyResult $res "Chaincode installation on remote peer PEER$PEER has Failed"
@@ -130,9 +133,9 @@ instantiateChaincode () {
 	# while 'peer chaincode' command can get the orderer endpoint from the peer (if join was successful),
 	# lets supply it directly as we know it using the "-o" option
 	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-		peer chaincode instantiate -o orderer.bankingfederation.com:7050 -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" >&log.txt
+		peer chaincode instantiate -o orderer.bankingfederation.com:7050 -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" -l $LANGUAGE >&log.txt
 	else
-		peer chaincode instantiate -o orderer.bankingfederation.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" >&log.txt
+		peer chaincode instantiate -o orderer.bankingfederation.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n mycc -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" -l $LANGUAGE >&log.txt
 	fi
 	res=$?
 	cat log.txt
@@ -228,7 +231,7 @@ echo "Querying chaincode on multibankwest/peer3..."
 chaincodeQuery 3 90
 
 echo
-echo "========= All GOOD, BYFN execution completed =========== "
+echo "========= All GOOD, Build bankingfederation.com execution completed =========== "
 echo
 
 echo
