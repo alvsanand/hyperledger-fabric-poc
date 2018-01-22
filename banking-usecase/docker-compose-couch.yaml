@@ -1,7 +1,7 @@
 version: '2'
 
 networks:
-  net_bankingfederation.com:
+  bankingfederation_net:
 
 services:
   couchdb0:
@@ -17,7 +17,7 @@ services:
     ports:
       - "5984:5984"
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer0.partnersbank.bankingfederation.com:
     environment:
@@ -44,7 +44,7 @@ services:
     ports:
       - "6984:5984"
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer1.partnersbank.bankingfederation.com:
     environment:
@@ -71,7 +71,7 @@ services:
     ports:
       - "7984:5984"
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer0.multibankwest.bankingfederation.com:
     environment:
@@ -98,7 +98,7 @@ services:
     ports:
       - "8984:5984"
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer1.multibankwest.bankingfederation.com:
     environment:

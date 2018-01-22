@@ -1,7 +1,7 @@
 version: '2'
 
 networks:
-  net_bankingfederation.com:
+  bankingfederation_net:
 
 services:
 
@@ -11,7 +11,7 @@ services:
       service: orderer.bankingfederation.com
     container_name: orderer.bankingfederation.com
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer0.partnersbank.bankingfederation.com:
     container_name: peer0.partnersbank.bankingfederation.com
@@ -19,7 +19,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer0.partnersbank.bankingfederation.com
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer1.partnersbank.bankingfederation.com:
     container_name: peer1.partnersbank.bankingfederation.com
@@ -27,7 +27,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer1.partnersbank.bankingfederation.com
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer0.multibankwest.bankingfederation.com:
     container_name: peer0.multibankwest.bankingfederation.com
@@ -35,7 +35,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer0.multibankwest.bankingfederation.com
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   peer1.multibankwest.bankingfederation.com:
     container_name: peer1.multibankwest.bankingfederation.com
@@ -43,7 +43,7 @@ services:
       file:  base/docker-compose-base.yaml
       service: peer1.multibankwest.bankingfederation.com
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 
   cli:
     container_name: cli
@@ -76,5 +76,5 @@ services:
       - peer0.multibankwest.bankingfederation.com
       - peer1.multibankwest.bankingfederation.com
     networks:
-      - net_bankingfederation.com
+      - bankingfederation_net
 

@@ -7,3 +7,4 @@ fabric_install/prereqs-ubuntu.sh
 **/*.block
 **/*.tx
 **/crypto-config/
+banking-usecase/docker-compose-e2e.yaml
