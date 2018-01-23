@@ -7,17 +7,19 @@ echo "\___ \    | |     / _ \   | |_) |   | |  "
 echo " ___) |   | |    / ___ \  |  _ <    | |  "
 echo "|____/    |_|   /_/   \_\ |_| \_\   |_|  "
 echo
-echo "Build bankingfederation.com Network end-to-end test"
+echo "Build bankingfederation.com Network"
 echo
 CHANNEL_NAME="$1"
 DELAY="$2"
-: ${CHANNEL_NAME:="mychannel"}
+: ${CHANNEL_NAME:="PartnersBank2MultiBankWest"}
 : ${TIMEOUT:="60"}
 COUNTER=1
 MAX_RETRY=5
 ORDERER_CA=/opt/gopath/src/bankingfederation.com/crypto/ordererOrganizations/bankingfederation.com/orderers/orderer.bankingfederation.com/msp/tlscacerts/tlsca.bankingfederation.com-cert.pem
-LANGUAGE=node
-CHAINCODE_NAME="bankingfederation"
+
+CHAINCODE_LANGUAGE=${CHAINCODE_LANGUAGE:="golang"}
+CHAINCODE_DIR=${CHAINCODE_DIR:="bankingfederation.com/chaincode"}
+CHAINCODE_NAME=${CHAINCODE_NAME:="bankingfederation"}
 
 
 echo "Channel name : "$CHANNEL_NAME
@@ -33,7 +35,6 @@ verifyResult () {
 }
 
 setGlobals () {
-
 	if [ $1 -eq 0 -o $1 -eq 1 ] ; then
 		CORE_PEER_LOCALMSPID="PartnersBankMSP"
 		CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/ca.crt
@@ -120,7 +121,7 @@ installChaincode () {
 	PEER=$1
 	setGlobals $PEER
 
-	peer chaincode install -n $CHAINCODE_NAME -v 1.0 -p chaincode/ -l $LANGUAGE >&log.txt
+	peer chaincode install -n $CHAINCODE_NAME -v 1.0 -p $CHAINCODE_DIR -l $CHAINCODE_LANGUAGE >&log.txt
 	res=$?
 	cat log.txt
         verifyResult $res "Chaincode installation on remote peer PEER$PEER has Failed"
@@ -134,9 +135,9 @@ instantiateChaincode () {
 	# while 'peer chaincode' command can get the orderer endpoint from the peer (if join was successful),
 	# lets supply it directly as we know it using the "-o" option
 	if [ -z "$CORE_PEER_TLS_ENABLED" -o "$CORE_PEER_TLS_ENABLED" = "false" ]; then
-		peer chaincode instantiate -o orderer.bankingfederation.com:7050 -C $CHANNEL_NAME -n $CHAINCODE_NAME -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" -l $LANGUAGE >&log.txt
+		peer chaincode instantiate -o orderer.bankingfederation.com:7050 -C $CHANNEL_NAME -n $CHAINCODE_NAME -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" -l $CHAINCODE_LANGUAGE >&log.txt
 	else
-		peer chaincode instantiate -o orderer.bankingfederation.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" -l $LANGUAGE >&log.txt
+		peer chaincode instantiate -o orderer.bankingfederation.com:7050 --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA -C $CHANNEL_NAME -n $CHAINCODE_NAME -v 1.0 -c '{"Args":["init","a","100","b","200"]}' -P "OR	('PartnersBankMSP.member','MultiBankWestMSP.member')" -l $CHAINCODE_LANGUAGE >&log.txt
 	fi
 	res=$?
 	cat log.txt
@@ -206,7 +207,6 @@ echo "Updating anchor peers for multibankwest..."
 updateAnchorPeers 2
 
 ## Install chaincode on Peer0/PartnersBank and Peer2/MultiBankWest
-## Install chaincode on Peer0/PartnersBank and Peer2/MultiBankWest
 for i in $(seq 0 3); do
 	echo "Installing chaincode on peer$i..."
 	installChaincode $i
@@ -223,10 +223,6 @@ chaincodeQuery 0 100
 #Invoke on chaincode on Peer0/PartnersBank
 echo "Sending invoke transaction on partnersbank/peer0..."
 chaincodeInvoke 0
-
-## Install chaincode on Peer3/MultiBankWest
-echo "Installing chaincode on multibankwest/peer3..."
-installChaincode 3
 
 #Query on chaincode on Peer3/MultiBankWest, check if the result is 90
 echo "Querying chaincode on multibankwest/peer3..."

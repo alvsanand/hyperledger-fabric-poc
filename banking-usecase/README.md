@@ -78,7 +78,7 @@ sudo apt install libtool libltdl-dev
 mkdir fabric-tools
 cd fabric-tools
 
-VERSION=1.1.0-preview
+VERSION=1.0.5
 curl -sSL https://goo.gl/6wtTN5 | bash -s $VERSION $VERSION
 
 echo "export PATH=$PWD/bin:$PATH" >> $HOME/.bashrc
@@ -89,17 +89,17 @@ echo "export PATH=$PWD/bin:$PATH" >> $HOME/.bashrc
 ### Initializing the Hyperledger Fabric Cluster 
 
 ```
-./byfn.sh -m generate
+./fnm.sh -m generate
 ```
 
 ### Launching the Hyperledger Fabric Cluster 
 
 ```
-./byfn.sh -m up -s couchdb
+./fnm.sh -m up -s couchdb
 ```
 
 ### Stopping the Hyperledger Fabric Cluster 
 
 ```
-./byfn.sh -m down
+./fnm.sh -m down
 ```

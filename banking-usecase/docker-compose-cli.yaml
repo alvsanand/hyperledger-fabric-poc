@@ -61,6 +61,8 @@ services:
       - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/server.key
       - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/peers/peer0.partnersbank.bankingfederation.com/tls/ca.crt
       - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/bankingfederation.com/crypto/peerOrganizations/partnersbank.bankingfederation.com/users/Admin@partnersbank.bankingfederation.com/msp
+      - CHAINCODE_LANGUAGE=golang
+      - CHAINCODE_DIR=bankingfederation.com/chaincode
     working_dir: /opt/gopath/src/bankingfederation.com
     command: /bin/bash -c './scripts/script.sh ${CHANNEL_NAME} ${DELAY}; sleep $TIMEOUT'
     volumes:
