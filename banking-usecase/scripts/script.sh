@@ -11,7 +11,7 @@ echo "Build bankingfederation.com Network"
 echo
 CHANNEL_NAME="$1"
 DELAY="$2"
-: ${CHANNEL_NAME:="PartnersBank2MultiBankWest"}
+: ${CHANNEL_NAME:="pb2mbw"}
 : ${TIMEOUT:="60"}
 COUNTER=1
 MAX_RETRY=5

@@ -39,14 +39,12 @@ function printHelp () {
   echo "    -c <channel name> - channel name to use (defaults to \"mychannel\")"
   echo "    -t <timeout> - CLI timeout duration in microseconds (defaults to 10000)"
   echo "    -d <delay> - delay duration in seconds (defaults to 3)"
-  echo "    -f <docker-compose-file> - specify which docker-compose file use (defaults to docker-compose-cli.yaml)"
-  echo "    -s <dbtype> - the database backend to use: goleveldb (default) or couchdb"
   echo
   echo "Typically, one would first generate the required certificates and "
   echo "genesis block, then bring up the network. e.g.:"
   echo
   echo "	fnm.sh -m generate -c mychannel"
-  echo "	fnm.sh -m up -c mychannel -s couchdb"
+  echo "	fnm.sh -m up -c mychannel"
   echo "	fnm.sh -m down -c mychannel"
   echo
   echo "Taking all defaults:"
@@ -104,11 +102,9 @@ function networkUp () {
     replacePrivateKey
     generateChannelArtifacts
   fi
-  if [ "${IF_COUCHDB}" == "couchdb" ]; then
-      CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT DELAY=$CLI_DELAY docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH up -d 2>&1
-  else
-      CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT DELAY=$CLI_DELAY docker-compose -f $COMPOSE_FILE up -d 2>&1
-  fi
+  
+  CHANNEL_NAME=$CHANNEL_NAME TIMEOUT=$CLI_TIMEOUT DELAY=$CLI_DELAY docker-compose -f $COMPOSE_FILE up -d 2>&1
+  
   if [ $? -ne 0 ]; then
     echo "ERROR !!!! Unable to start network"
     docker logs -f cli
@@ -120,7 +116,6 @@ function networkUp () {
 # Tear down running network
 function networkDown () {
   docker-compose -f $COMPOSE_FILE down
-  docker-compose -f $COMPOSE_FILE -f $COMPOSE_FILE_COUCH down
   # Don't remove containers, images, etc if restarting
   if [ "$MODE" != "restart" ]; then
     #Cleanup the chaincode containers
@@ -303,11 +298,9 @@ CLI_TIMEOUT=10
 #default for delay
 CLI_DELAY=3
 # channel name defaults to "mychannel"
-CHANNEL_NAME="PartnersBank2MultiBankWest"
+CHANNEL_NAME="pb2mbw"
 # use this as the default docker-compose yaml definition
-COMPOSE_FILE=docker-compose-cli.yaml
-#
-COMPOSE_FILE_COUCH=docker-compose-couch.yaml
+COMPOSE_FILE=docker-compose-e2e.yaml
 
 # Parse commandline args
 while getopts "h?m:c:t:d:f:s:" opt; do
@@ -323,8 +316,6 @@ while getopts "h?m:c:t:d:f:s:" opt; do
     t)  CLI_TIMEOUT=$OPTARG
     ;;
     d)  CLI_DELAY=$OPTARG
-    ;;
-    f)  COMPOSE_FILE=$OPTARG
     ;;
     s)  IF_COUCHDB=$OPTARG
     ;;

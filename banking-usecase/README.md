@@ -86,16 +86,10 @@ echo "export PATH=$PWD/bin:$PATH" >> $HOME/.bashrc
 
 ## Running the PoC
 
-### Initializing the Hyperledger Fabric Cluster 
-
-```
-./fnm.sh -m generate
-```
-
 ### Launching the Hyperledger Fabric Cluster 
 
 ```
-./fnm.sh -m up -s couchdb
+./fnm.sh -m up
 ```
 
 ### Stopping the Hyperledger Fabric Cluster 
